@@ -1,6 +1,5 @@
 // v2
 import { useState, useEffect } from 'react'
-import { useState, useEffect } from 'react'
 import { supabase } from './supabaseClient'
 import Login from './Login'
 import NewListing from './NewListing'
