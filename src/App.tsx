@@ -50,6 +50,7 @@ export default function App() {
   const [user, setUser] = useState<any>(null)
   const [hash, setHash] = useState(getHash())
   const [showCarModal, setShowCarModal] = useState(false)
+  const [showSearch, setShowSearch] = useState(false)
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user))
@@ -112,12 +113,20 @@ export default function App() {
 
   return (
     <div style={{ fontFamily: "'Segoe UI', sans-serif", background: '#f4f4f0', minHeight: '100vh' }}>
+
       {showCarModal && (
-        <div onClick={() => setShowCarModal(false)} style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.4)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div
+          onClick={() => setShowCarModal(false)}
+          style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.4)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
           <div onClick={e => e.stopPropagation()} style={{ background: '#faf9f6', border: '1.5px solid #2a2a2a', borderRadius: 4, padding: 24, minWidth: 280 }}>
             <h3 style={{ margin: '0 0 16px', fontSize: 16 }}>Valitse automalli</h3>
             {[{ value: '', label: 'Kaikki autot' }, ...CAR_MODELS].map(car => (
-              <div key={car.value} onClick={() => { setSelectedCar(car.value); setShowCarModal(false) }} style={{ padding: '10px 14px', cursor: 'pointer', borderRadius: 3, fontWeight: selectedCar === car.value ? 700 : 400, background: selectedCar === car.value ? '#f0efe8' : 'transparent', marginBottom: 4, border: selectedCar === car.value ? '1px solid #2a2a2a' : '1px solid transparent' }}>
+              <div
+                key={car.value}
+                onClick={() => { setSelectedCar(car.value); setShowCarModal(false) }}
+                style={{ padding: '10px 14px', cursor: 'pointer', borderRadius: 3, fontWeight: selectedCar === car.value ? 700 : 400, background: selectedCar === car.value ? '#f0efe8' : 'transparent', marginBottom: 4, border: selectedCar === car.value ? '1px solid #2a2a2a' : '1px solid transparent' }}
+              >
                 {car.label}
               </div>
             ))}
@@ -127,19 +136,27 @@ export default function App() {
 
       <div style={{ background: '#faf9f6', borderBottom: '1.5px solid #2a2a2a' }}>
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 16px', position: 'relative' }}>
+
           <div style={{ position: 'absolute', right: 16, top: 16, display: 'flex', gap: 8, zIndex: 2 }}>
             {user ? (
               <>
-                <div onClick={() => goTo('#profile')} style={{ width: 38, height: 38, borderRadius: '50%', border: '1.5px solid #2a2a2a', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: '#faf9f6' }}>
+                <div
+                  onClick={() => goTo('#profile')}
+                  style={{ width: 38, height: 38, borderRadius: '50%', border: '1.5px solid #2a2a2a', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: '#faf9f6' }}
+                >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" strokeWidth="1.5">
                     <circle cx="12" cy="8" r="4"/>
                     <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
                   </svg>
                 </div>
-                <button onClick={signOut} style={{ padding: '7px 12px', border: '1px solid #ccc', background: 'transparent', cursor: 'pointer', fontSize: 12, color: '#888', borderRadius: 3 }}>Ulos</button>
+                <button onClick={signOut} style={{ padding: '7px 12px', border: '1px solid #ccc', background: 'transparent', cursor: 'pointer', fontSize: 12, color: '#888', borderRadius: 3 }}>
+                  Ulos
+                </button>
               </>
             ) : (
-              <button onClick={() => goTo('#login')} style={{ padding: '7px 16px', border: '1.5px solid #2a2a2a', background: '#faf9f6', cursor: 'pointer', fontSize: 13, fontWeight: 600, borderRadius: 3 }}>Kirjaudu sisään</button>
+              <button onClick={() => goTo('#login')} style={{ padding: '7px 16px', border: '1.5px solid #2a2a2a', background: '#faf9f6', cursor: 'pointer', fontSize: 13, fontWeight: 600, borderRadius: 3 }}>
+                Kirjaudu sisään
+              </button>
             )}
           </div>
 
@@ -148,11 +165,16 @@ export default function App() {
           </div>
 
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center', paddingBottom: 16 }}>
-            <button onClick={() => setShowCarModal(true)} style={{ padding: '8px 20px', border: '1.5px solid #2a2a2a', background: '#faf9f6', cursor: 'pointer', fontSize: 14, fontWeight: 600, borderRadius: 3 }}>
+            <button
+              onClick={() => setShowCarModal(true)}
+              style={{ padding: '8px 20px', border: '1.5px solid #2a2a2a', background: '#faf9f6', cursor: 'pointer', fontSize: 14, fontWeight: 600, borderRadius: 3 }}
+            >
               {selectedCar ? CAR_MODELS.find(c => c.value === selectedCar)?.label : '▾ Valitse automalli'}
             </button>
             {user && (
-              <button onClick={() => goTo('#new')} style={{ padding: '8px 20px', border: '1.5px solid #2a2a2a', background: '#faf9f6', cursor: 'pointer', fontSize: 14, fontWeight: 600, borderRadius: 3 }}>+ Uusi ilmoitus</button>
+              <button onClick={() => goTo('#new')} style={{ padding: '8px 20px', border: '1.5px solid #2a2a2a', background: '#faf9f6', cursor: 'pointer', fontSize: 14, fontWeight: 600, borderRadius: 3 }}>
+                + Uusi ilmoitus
+              </button>
             )}
           </div>
 
@@ -162,11 +184,28 @@ export default function App() {
                 <circle cx="11" cy="11" r="8"/>
                 <path d="M21 21l-4.35-4.35"/>
               </svg>
-              <input type="text" placeholder="Hae varaosaa, mallia tai osanumeroa..." value={searchText} onChange={e => setSearchText(e.target.value)} style={{ border: 'none', outline: 'none', fontSize: 14, width: '100%', background: 'transparent' }} />
+              <input
+                type="text"
+                placeholder="Hae varaosaa, mallia tai osanumeroa..."
+                value={searchText}
+                onChange={e => setSearchText(e.target.value)}
+                style={{ border: 'none', outline: 'none', fontSize: 14, width: '100%', background: 'transparent' }}
+              />
             </div>
-            <button onClick={() => goTo('#search')} style={{ padding: '9px 14px', border: '1.5px solid #2a2a2a', borderRadius: 3, background: '#1a1a2e', color: 'white', cursor: 'pointer', fontSize: 13, fontWeight: 600, whiteSpace: 'nowrap' }}>Tarkenna hakua</button>
-            <select value={selectedCategory} onChange={e => setSelectedCategory(e.target.value)} style={{ padding: '9px 12px', border: '1.5px solid #2a2a2a', borderRadius: 3, fontSize: 13, background: '#faf9f6', cursor: 'pointer' }}>
-              {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+            <button
+  onClick={() => { window.location.hash = '#search'; setHash('#search') }}
+  style={{ padding: '9px 14px', border: '1.5px solid #2a2a2a', borderRadius: 3, background: '#1a1a2e', color: 'white', cursor: 'pointer', fontSize: 13, fontWeight: 600, whiteSpace: 'nowrap' }}
+>
+  Tarkenna hakua
+</button>
+            <select
+              value={selectedCategory}
+              onChange={e => setSelectedCategory(e.target.value)}
+              style={{ padding: '9px 12px', border: '1.5px solid #2a2a2a', borderRadius: 3, fontSize: 13, background: '#faf9f6', cursor: 'pointer' }}
+            >
+              {CATEGORIES.map(c => (
+                <option key={c.value} value={c.value}>{c.label}</option>
+              ))}
             </select>
           </div>
         </div>
@@ -184,9 +223,17 @@ export default function App() {
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 16 }}>
             {listings.map(listing => (
-              <div key={listing.id} onClick={() => goTo(`#listing-${listing.id}`)} onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')} onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')} style={{ border: '1.5px solid #2a2a2a', borderRadius: 3, overflow: 'hidden', background: 'white', cursor: 'pointer', transition: 'transform 0.15s', boxShadow: '3px 3px 0 #d0cfc8' }}>
+              <div
+                key={listing.id}
+                onClick={() => goTo(`#listing-${listing.id}`)}
+                onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
+                onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+                style={{ border: '1.5px solid #2a2a2a', borderRadius: 3, overflow: 'hidden', background: 'white', cursor: 'pointer', transition: 'transform 0.15s', boxShadow: '3px 3px 0 #d0cfc8' }}
+              >
                 <div style={{ background: '#f0efe8', height: 170, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48, borderBottom: '1.5px solid #2a2a2a' }}>
-                  {listing.listing_images?.[0]?.url ? <img src={listing.listing_images[0].url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : '🔩'}
+                  {listing.listing_images?.[0]?.url
+                    ? <img src={listing.listing_images[0].url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    : '🔩'}
                 </div>
                 <div style={{ padding: 14 }}>
                   <div style={{ fontSize: 11, color: '#999', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
@@ -198,9 +245,21 @@ export default function App() {
                     {listing.price ? `${listing.price} €` : 'Hinta sopimuksen mukaan'}
                   </div>
                   <div style={{ display: 'flex', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
-                    {listing.condition && <span style={{ fontSize: 11, background: '#f0efe8', color: '#666', padding: '3px 8px', border: '0.5px solid #ccc', borderRadius: 2 }}>{CONDITION_LABELS[listing.condition]}</span>}
-                    {listing.shipping_available && <span style={{ fontSize: 11, background: '#f0efe8', color: '#555', padding: '3px 8px', border: '0.5px solid #ccc', borderRadius: 2 }}>📦 Postitus</span>}
-                    {listing.is_rare && <span style={{ fontSize: 11, background: '#fff8e1', color: '#7d5a00', padding: '3px 8px', border: '0.5px solid #e0c060', borderRadius: 2 }}>⭐ Harvinaisuus</span>}
+                    {listing.condition && (
+                      <span style={{ fontSize: 11, background: '#f0efe8', color: '#666', padding: '3px 8px', border: '0.5px solid #ccc', borderRadius: 2 }}>
+                        {CONDITION_LABELS[listing.condition]}
+                      </span>
+                    )}
+                    {listing.shipping_available && (
+                      <span style={{ fontSize: 11, background: '#f0efe8', color: '#555', padding: '3px 8px', border: '0.5px solid #ccc', borderRadius: 2 }}>
+                        📦 Postitus
+                      </span>
+                    )}
+                    {listing.is_rare && (
+                      <span style={{ fontSize: 11, background: '#fff8e1', color: '#7d5a00', padding: '3px 8px', border: '0.5px solid #e0c060', borderRadius: 2 }}>
+                        ⭐ Harvinaisuus
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
