@@ -50,7 +50,6 @@ export default function App() {
   const [user, setUser] = useState<any>(null)
   const [hash, setHash] = useState(getHash())
   const [showCarModal, setShowCarModal] = useState(false)
-  const [showSearch, setShowSearch] = useState(false)
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user))
