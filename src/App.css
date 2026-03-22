@@ -1,0 +1,14 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #f4f4f0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+button {
+  font-family: inherit;
+}
