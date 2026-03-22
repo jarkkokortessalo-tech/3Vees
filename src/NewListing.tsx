@@ -158,7 +158,7 @@ export default function NewListing({ editId }: { editId?: string }) {
       </div>
 
       <div style={{ display: 'flex', gap: 4, marginBottom: 24 }}>
-        {STEPS.map((_s) => (
+        {STEPS.map((s, i) => (
           <div key={i} style={{ flex: 1, height: 4, borderRadius: 4, background: i <= step ? '#e63946' : '#eee' }} />
         ))}
       </div>
