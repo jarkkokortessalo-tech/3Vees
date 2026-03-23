@@ -36,6 +36,12 @@ export default function NewListing({ editId }: { editId?: string }) {
     radio_voltage: '',
     radio_era: '',
     radio_works: '',
+    wheel_diameter: '',
+    wheel_width: '',
+    wheel_pcd: '',
+    wheel_et: '',
+    wheel_cb: '',
+    wheel_material: '',
     price: '',
     shipping_available: false,
     shipping_price: '',
@@ -73,6 +79,12 @@ export default function NewListing({ editId }: { editId?: string }) {
         radio_voltage: data.radio_voltage || '',
         radio_era: data.radio_era || '',
         radio_works: data.radio_works !== null ? data.radio_works.toString() : '',
+        wheel_diameter: data.wheel_diameter || '',
+        wheel_width: data.wheel_width || '',
+        wheel_pcd: data.wheel_pcd || '',
+        wheel_et: data.wheel_et || '',
+        wheel_cb: data.wheel_cb || '',
+        wheel_material: data.wheel_material || '',
         price: data.price?.toString() || '',
         shipping_available: data.shipping_available || false,
         shipping_price: data.shipping_price?.toString() || '',
@@ -112,6 +124,12 @@ export default function NewListing({ editId }: { editId?: string }) {
       radio_voltage: form.category === 'radiot' ? (form.radio_voltage || null) : null,
       radio_era: form.category === 'radiot' ? (form.radio_era || null) : null,
       radio_works: form.category === 'radiot' && form.radio_works !== '' ? form.radio_works === 'true' : null,
+      wheel_diameter: form.category === 'vanteet' ? (form.wheel_diameter || null) : null,
+      wheel_width: form.category === 'vanteet' ? (form.wheel_width || null) : null,
+      wheel_pcd: form.category === 'vanteet' ? (form.wheel_pcd || null) : null,
+      wheel_et: form.category === 'vanteet' ? (form.wheel_et || null) : null,
+      wheel_cb: form.category === 'vanteet' ? (form.wheel_cb || null) : null,
+      wheel_material: form.category === 'vanteet' ? (form.wheel_material || null) : null,
       price: form.price ? parseFloat(form.price) : null,
       shipping_available: form.shipping_available,
       shipping_price: form.shipping_price ? parseFloat(form.shipping_price) : null,
@@ -158,7 +176,7 @@ export default function NewListing({ editId }: { editId?: string }) {
       </div>
 
       <div style={{ display: 'flex', gap: 4, marginBottom: 24 }}>
-        {STEPS.map((s, i) => (
+        {STEPS.map((_s, i) => (
           <div key={i} style={{ flex: 1, height: 4, borderRadius: 4, background: i <= step ? '#e63946' : '#eee' }} />
         ))}
       </div>
@@ -166,7 +184,6 @@ export default function NewListing({ editId }: { editId?: string }) {
         Vaihe {step + 1}/{STEPS.length}: <strong>{STEPS[step]}</strong>
       </div>
 
-      {/* Vaihe 1: Perustiedot */}
       {step === 0 && (
         <div>
           <label style={labelStyle}>Auto *</label>
@@ -215,7 +232,6 @@ export default function NewListing({ editId }: { editId?: string }) {
             <option value="radiot">Radiot</option>
           </select>
 
-          {/* Bensa/Diesel vain Tekniikka-kategoriassa */}
           {form.category === 'tekniikka' && (
             <>
               <label style={labelStyle}>Polttoaine</label>
@@ -229,7 +245,6 @@ export default function NewListing({ editId }: { editId?: string }) {
         </div>
       )}
 
-      {/* Vaihe 2: Osan tiedot */}
       {step === 1 && (
         <div>
           <label style={labelStyle}>Otsikko *</label>
@@ -265,6 +280,44 @@ export default function NewListing({ editId }: { editId?: string }) {
             Alkuperäinen lisävaruste
           </label>
 
+          {/* Vanteiden lisätiedot */}
+          {form.category === 'vanteet' && (
+            <div style={{ background: '#f9f9f9', padding: 16, borderRadius: 8, marginTop: 12 }}>
+              <strong style={{ fontSize: 14 }}>🔩 Vanteen tiedot</strong>
+
+              <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+                <div style={{ flex: 1 }}>
+                  <label style={labelStyle}>Halkaisija (tuumaa)</label>
+                  <input type="text" placeholder="esim. 15" value={form.wheel_diameter} onChange={e => set('wheel_diameter', e.target.value)} style={inputStyle} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label style={labelStyle}>Leveys (J)</label>
+                  <input type="text" placeholder="esim. 6.0" value={form.wheel_width} onChange={e => set('wheel_width', e.target.value)} style={inputStyle} />
+                </div>
+              </div>
+
+              <label style={labelStyle}>Pulttijako (PCD)</label>
+              <input type="text" placeholder="esim. 4x100" value={form.wheel_pcd} onChange={e => set('wheel_pcd', e.target.value)} style={inputStyle} />
+
+              <div style={{ display: 'flex', gap: 8 }}>
+                <div style={{ flex: 1 }}>
+                  <label style={labelStyle}>ET-luku (offset)</label>
+                  <input type="text" placeholder="esim. ET38" value={form.wheel_et} onChange={e => set('wheel_et', e.target.value)} style={inputStyle} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label style={labelStyle}>Keskireikä (CB)</label>
+                  <input type="text" placeholder="esim. 57.1" value={form.wheel_cb} onChange={e => set('wheel_cb', e.target.value)} style={inputStyle} />
+                </div>
+              </div>
+
+              <label style={labelStyle}>Materiaali</label>
+              <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+                <button onClick={() => set('wheel_material', 'alumiini')} style={btnStyle(form.wheel_material === 'alumiini')}>⚙️ Alumiini</button>
+                <button onClick={() => set('wheel_material', 'teräs')} style={btnStyle(form.wheel_material === 'teräs')}>🔧 Teräs</button>
+              </div>
+            </div>
+          )}
+
           {/* Radio-lisätiedot */}
           {form.category === 'radiot' && (
             <div style={{ background: '#f9f9f9', padding: 16, borderRadius: 8, marginTop: 12 }}>
@@ -286,7 +339,6 @@ export default function NewListing({ editId }: { editId?: string }) {
         </div>
       )}
 
-      {/* Vaihe 3: Kuvaus ja kuvat */}
       {step === 2 && (
         <div>
           <label style={labelStyle}>Kuvaus</label>
@@ -321,7 +373,6 @@ export default function NewListing({ editId }: { editId?: string }) {
         </div>
       )}
 
-      {/* Vaihe 4: Toimitus ja hinta */}
       {step === 3 && (
         <div>
           <label style={labelStyle}>Hinta (€)</label>
@@ -335,7 +386,11 @@ export default function NewListing({ editId }: { editId?: string }) {
           {form.shipping_available && (
             <div style={{ background: '#f9f9f9', borderRadius: 8, padding: 14, marginTop: 8, marginBottom: 8 }}>
               <label style={labelStyle}>Pakettikoko</label>
-              <select value={form.shipping_size} onChange={e => { set('shipping_size', e.target.value); const prices: Record<string,string> = { 'XXS': '6.90', 'S': '8.90', 'M': '10.90', 'L': '13.90', 'XL': '16.90' }; if (prices[e.target.value]) set('shipping_price', prices[e.target.value]) }} style={inputStyle}>
+              <select value={form.shipping_size} onChange={e => {
+                set('shipping_size', e.target.value)
+                const prices: Record<string, string> = { 'XXS': '6.90', 'S': '8.90', 'M': '10.90', 'L': '13.90', 'XL': '16.90' }
+                if (prices[e.target.value]) set('shipping_price', prices[e.target.value])
+              }} style={inputStyle}>
                 <option value="">Valitse koko</option>
                 <option value="XXS">Pikkupaketti XXS — max 3×25×35 cm — 6,90 €</option>
                 <option value="S">S-paketti — max 11×32×42 cm — 8,90 €</option>
@@ -346,10 +401,7 @@ export default function NewListing({ editId }: { editId?: string }) {
 
               <label style={labelStyle}>Postituskulut (€)</label>
               <input type="number" placeholder="0.00" value={form.shipping_price} onChange={e => set('shipping_price', e.target.value)} style={inputStyle} />
-
-              <div style={{ fontSize: 12, color: '#888', marginTop: 4 }}>
-                💡 Hinnat ovat ohjeellisia Posti-hintoja. Voit muuttaa hintaa vapaasti.
-              </div>
+              <div style={{ fontSize: 12, color: '#888', marginTop: 4 }}>💡 Hinnat ovat ohjeellisia Posti-hintoja.</div>
             </div>
           )}
 
