@@ -112,21 +112,51 @@ export default function App() {
 
   return (
     <div style={{ fontFamily: "'Segoe UI', sans-serif", background: '#f4f4f0', minHeight: '100vh' }}>
+
+      {/* Automalli-modal */}
       {showCarModal && (
         <div onClick={() => setShowCarModal(false)} style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.4)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: '#faf9f6', border: '1.5px solid #2a2a2a', borderRadius: 4, padding: 24, minWidth: 280 }}>
-            <h3 style={{ margin: '0 0 16px', fontSize: 16 }}>Valitse automalli</h3>
-            {[{ value: '', label: 'Kaikki autot' }, ...CAR_MODELS].map(car => (
-              <div key={car.value} onClick={() => { setSelectedCar(car.value); setShowCarModal(false) }} style={{ padding: '10px 14px', cursor: 'pointer', borderRadius: 3, fontWeight: selectedCar === car.value ? 700 : 400, background: selectedCar === car.value ? '#f0efe8' : 'transparent', marginBottom: 4, border: selectedCar === car.value ? '1px solid #2a2a2a' : '1px solid transparent' }}>
-                {car.label}
+          <div onClick={e => e.stopPropagation()} style={{ background: '#faf9f6', border: '1.5px solid #2a2a2a', borderRadius: 4, padding: 24, minWidth: 280, maxHeight: '80vh', overflowY: 'auto' }}>
+
+            <h3 style={{ margin: '0 0 16px', fontSize: 16 }}>Rajaa hakua</h3>
+
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ fontSize: 12, color: '#888', marginBottom: 8, textTransform: 'uppercase' as const, letterSpacing: '0.5px' }}>Automalli</div>
+              {[{ value: '', label: 'Kaikki autot' }, ...CAR_MODELS].map(car => (
+                <div
+                  key={car.value}
+                  onClick={() => { setSelectedCar(car.value); setSelectedCategory(''); setShowCarModal(false) }}
+                  style={{ padding: '10px 14px', cursor: 'pointer', borderRadius: 3, fontWeight: selectedCar === car.value && selectedCategory === '' ? 700 : 400, background: selectedCar === car.value && selectedCategory === '' ? '#f0efe8' : 'transparent', marginBottom: 4, border: selectedCar === car.value && selectedCategory === '' ? '1px solid #2a2a2a' : '1px solid transparent' }}
+                >
+                  {car.label}
+                </div>
+              ))}
+            </div>
+
+            <div style={{ borderTop: '1px solid #eee', paddingTop: 16 }}>
+              <div style={{ fontSize: 12, color: '#888', marginBottom: 8, textTransform: 'uppercase' as const, letterSpacing: '0.5px' }}>Erikoiskategoriat</div>
+              <div
+                onClick={() => { setSelectedCategory('vanteet'); setSelectedCar(''); setShowCarModal(false) }}
+                style={{ padding: '10px 14px', cursor: 'pointer', borderRadius: 3, fontWeight: selectedCategory === 'vanteet' ? 700 : 400, background: selectedCategory === 'vanteet' ? '#f0efe8' : 'transparent', border: selectedCategory === 'vanteet' ? '1px solid #2a2a2a' : '1px solid transparent', marginBottom: 4 }}
+              >
+                🔩 Vanteet
               </div>
-            ))}
+              <div
+                onClick={() => { setSelectedCategory('radiot'); setSelectedCar(''); setShowCarModal(false) }}
+                style={{ padding: '10px 14px', cursor: 'pointer', borderRadius: 3, fontWeight: selectedCategory === 'radiot' ? 700 : 400, background: selectedCategory === 'radiot' ? '#f0efe8' : 'transparent', border: selectedCategory === 'radiot' ? '1px solid #2a2a2a' : '1px solid transparent' }}
+              >
+                📻 Radiot
+              </div>
+            </div>
           </div>
         </div>
       )}
 
+      {/* Header */}
       <div style={{ background: '#faf9f6', borderBottom: '1.5px solid #2a2a2a' }}>
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 16px', position: 'relative' }}>
+
+          {/* Profiili */}
           <div style={{ position: 'absolute', right: 16, top: 16, display: 'flex', gap: 8, zIndex: 2 }}>
             {user ? (
               <>
@@ -143,26 +173,48 @@ export default function App() {
             )}
           </div>
 
+          {/* Logo */}
           <div style={{ textAlign: 'center', padding: '24px 0 16px' }}>
             <img src={LOGO_URL} alt="3Vs VW Parts" style={{ maxWidth: 500, width: '100%', height: 'auto' }} />
           </div>
 
+          {/* Napit */}
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center', paddingBottom: 16 }}>
-            <button onClick={() => setShowCarModal(true)} style={{ padding: '8px 20px', border: '1.5px solid #2a2a2a', background: '#faf9f6', cursor: 'pointer', fontSize: 14, fontWeight: 600, borderRadius: 3 }}>
-              {selectedCar ? CAR_MODELS.find(c => c.value === selectedCar)?.label : '▾ Valitse automalli'}
+            <button
+              onClick={() => setShowCarModal(true)}
+              style={{ padding: '8px 20px', border: '1.5px solid #2a2a2a', background: selectedCar || selectedCategory ? '#1a1a2e' : '#faf9f6', color: selectedCar || selectedCategory ? 'white' : '#1a1a1a', cursor: 'pointer', fontSize: 14, fontWeight: 600, borderRadius: 3 }}
+            >
+              {selectedCategory === 'vanteet' ? '🔩 Vanteet' : selectedCategory === 'radiot' ? '📻 Radiot' : selectedCar ? CAR_MODELS.find(c => c.value === selectedCar)?.label : '▾ Valitse automalli'}
             </button>
+            {(selectedCar || selectedCategory) && (
+              <button
+                onClick={() => { setSelectedCar(''); setSelectedCategory('') }}
+                style={{ padding: '8px 12px', border: '1px solid #ccc', background: 'transparent', cursor: 'pointer', fontSize: 13, color: '#888', borderRadius: 3 }}
+              >
+                ✕ Tyhjennä
+              </button>
+            )}
             {user && (
-              <button onClick={() => goTo('#new')} style={{ padding: '8px 20px', border: '1.5px solid #2a2a2a', background: '#faf9f6', cursor: 'pointer', fontSize: 14, fontWeight: 600, borderRadius: 3 }}>+ Uusi ilmoitus</button>
+              <button onClick={() => goTo('#new')} style={{ padding: '8px 20px', border: '1.5px solid #2a2a2a', background: '#faf9f6', cursor: 'pointer', fontSize: 14, fontWeight: 600, borderRadius: 3 }}>
+                + Uusi ilmoitus
+              </button>
             )}
           </div>
 
+          {/* Hakukenttä */}
           <div style={{ paddingBottom: 16, maxWidth: 600, margin: '0 auto' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1.5px solid #2a2a2a', borderRadius: 3, padding: '9px 14px', background: 'white', marginBottom: 8 }}>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2">
                 <circle cx="11" cy="11" r="8"/>
                 <path d="M21 21l-4.35-4.35"/>
               </svg>
-              <input type="text" placeholder="Hae varaosaa, mallia tai osanumeroa..." value={searchText} onChange={e => setSearchText(e.target.value)} style={{ border: 'none', outline: 'none', fontSize: 14, width: '100%', background: 'transparent' }} />
+              <input
+                type="text"
+                placeholder="Hae varaosaa, mallia tai osanumeroa..."
+                value={searchText}
+                onChange={e => setSearchText(e.target.value)}
+                style={{ border: 'none', outline: 'none', fontSize: 14, width: '100%', background: 'transparent' }}
+              />
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
               <button onClick={() => goTo('#search')} style={{ flex: 1, padding: '9px 14px', border: '1.5px solid #2a2a2a', borderRadius: 3, background: '#1a1a2e', color: 'white', cursor: 'pointer', fontSize: 13, fontWeight: 600 }}>
@@ -176,6 +228,7 @@ export default function App() {
         </div>
       </div>
 
+      {/* Ilmoituslista */}
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px 16px' }}>
         {loading ? (
           <p style={{ textAlign: 'center', color: '#888', marginTop: 60 }}>Ladataan...</p>
@@ -188,12 +241,20 @@ export default function App() {
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 12 }}>
             {listings.map(listing => (
-              <div key={listing.id} onClick={() => goTo(`#listing-${listing.id}`)} onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')} onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')} style={{ border: '1.5px solid #2a2a2a', borderRadius: 3, overflow: 'hidden', background: 'white', cursor: 'pointer', transition: 'transform 0.15s', boxShadow: '3px 3px 0 #d0cfc8' }}>
+              <div
+                key={listing.id}
+                onClick={() => goTo(`#listing-${listing.id}`)}
+                onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
+                onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+                style={{ border: '1.5px solid #2a2a2a', borderRadius: 3, overflow: 'hidden', background: 'white', cursor: 'pointer', transition: 'transform 0.15s', boxShadow: '3px 3px 0 #d0cfc8' }}
+              >
                 <div style={{ background: '#f0efe8', height: 130, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, borderBottom: '1.5px solid #2a2a2a' }}>
-                  {listing.listing_images?.[0]?.url ? <img src={listing.listing_images[0].url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : '🔩'}
+                  {listing.listing_images?.[0]?.url
+                    ? <img src={listing.listing_images[0].url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    : '🔩'}
                 </div>
                 <div style={{ padding: 10 }}>
-                  <div style={{ fontSize: 10, color: '#999', marginBottom: 3, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  <div style={{ fontSize: 10, color: '#999', marginBottom: 3, textTransform: 'uppercase' as const, letterSpacing: '0.5px' }}>
                     {CAR_MODELS.find(c => c.value === listing.car_model)?.label}
                     {listing.car_generation ? ` • ${listing.car_generation}` : ''}
                   </div>
@@ -202,9 +263,22 @@ export default function App() {
                     {listing.price ? `${listing.price} €` : 'Sos. mukaan'}
                   </div>
                   <div style={{ display: 'flex', gap: 4, marginTop: 6, flexWrap: 'wrap' }}>
-                    {listing.condition && <span style={{ fontSize: 10, background: '#f0efe8', color: '#666', padding: '2px 6px', border: '0.5px solid #ccc', borderRadius: 2 }}>{CONDITION_LABELS[listing.condition]}</span>}
-                    {listing.shipping_available && <span style={{ fontSize: 10, background: '#f0efe8', color: '#555', padding: '2px 6px', border: '0.5px solid #ccc', borderRadius: 2 }}>📦</span>}
-                    {listing.is_rare && <span style={{ fontSize: 10, background: '#fff8e1', color: '#7d5a00', padding: '2px 6px', border: '0.5px solid #e0c060', borderRadius: 2 }}>⭐</span>}
+                    {listing.condition && (
+                      <span style={{ fontSize: 10, background: '#f0efe8', color: '#666', padding: '2px 6px', border: '0.5px solid #ccc', borderRadius: 2 }}>
+                        {CONDITION_LABELS[listing.condition]}
+                      </span>
+                    )}
+                    {listing.shipping_available && (
+                      <span style={{ fontSize: 10, background: '#f0efe8', color: '#555', padding: '2px 6px', border: '0.5px solid #ccc', borderRadius: 2 }}>📦</span>
+                    )}
+                    {listing.is_rare && (
+                      <span style={{ fontSize: 10, background: '#fff8e1', color: '#7d5a00', padding: '2px 6px', border: '0.5px solid #e0c060', borderRadius: 2 }}>⭐</span>
+                    )}
+                    {listing.view_count > 0 && (
+                      <span style={{ fontSize: 10, background: '#f0efe8', color: '#888', padding: '2px 6px', border: '0.5px solid #ccc', borderRadius: 2 }}>
+                        👁 {listing.view_count}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
