@@ -4,10 +4,14 @@ import { supabase } from './supabaseClient'
 const STEPS = ['Perustiedot', 'Osan tiedot', 'Kuvaus', 'Toimitus']
 
 const CAR_GENERATIONS: Record<string, string[]> = {
-  kupla: ['1954-1967', '1968-1979', '1980-1985'],
+  kupla: ['1946-1952', '1953-1957', '1958-1964', '1965-1967', '1968-1970', '1971-1974'],
   transporter: ['T1', 'T2', 'T3'],
   golf: ['Mk1', 'Mk2'],
   jetta: ['Mk1', 'Mk2'],
+  passat: ['b1', 'b2'],
+  polo: ['mk1', 'mk2'],
+  scirocco: ['1'],
+  corrado: ['1'],
 }
 
 export default function NewListing({ editId }: { editId?: string }) {
