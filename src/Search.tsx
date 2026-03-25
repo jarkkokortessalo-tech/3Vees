@@ -2,10 +2,14 @@ import { useState } from 'react'
 
 const CAR_MODELS = [
   { value: '', label: 'Kaikki autot' },
-  { value: 'kupla', label: '🚗 Kupla' },
-  { value: 'transporter', label: '🚐 Transporter' },
-  { value: 'golf', label: '🚙 Golf' },
-  { value: 'jetta', label: '🚘 Jetta' },
+  { value: 'kupla', label: ' Kupla' },
+  { value: 'transporter', label: ' Transporter' },
+  { value: 'golf', label: ' Golf' },
+  { value: 'jetta', label: ' Jetta' },
+  { value: 'passat', label: ' Passat' },
+  { value: 'polo', label: ' Polo' },
+  { value: 'scirocco', label: ' Scirocco' },
+  { value: 'corrado', label: ' Corrado' },
 ]
 
 const CAR_GENERATIONS: Record<string, string[]> = {
