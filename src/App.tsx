@@ -10,10 +10,14 @@ import Search from './Search'
 const LOGO_URL = 'https://rohjtuvkgjkrguvpsqpa.supabase.co/storage/v1/object/public/assets/preview.webp'
 
 const CAR_MODELS = [
-  { value: 'kupla', label: '🚗 Kupla' },
-  { value: 'transporter', label: '🚐 Transporter' },
-  { value: 'golf', label: '🚙 Golf' },
-  { value: 'jetta', label: '🚘 Jetta' },
+  { value: 'kupla', label: ' Kupla' },
+  { value: 'transporter', label: ' Transporter' },
+  { value: 'golf', label: ' Golf' },
+  { value: 'jetta', label: ' Jetta' },
+  { value: 'passat', label: ' Passat' },
+  { value: 'polo', label: ' Polo' },
+  { value: 'scirocco', label: ' Scirocco' },
+  { value: 'corrado', label: ' Corrado' },
 ]
 
 const CATEGORIES = [
@@ -175,7 +179,7 @@ export default function App() {
 
           {/* Logo */}
           <div style={{ textAlign: 'center', padding: '24px 0 16px' }}>
-            <img src={LOGO_URL} alt="3Vs VW Parts" style={{ maxWidth: 500, width: '100%', height: 'auto' }} />
+            <img src={LOGO_URL} alt="3Vs VW Parts" style={{ maxWidth: 300, width: '100%', height: 'auto' }} />
           </div>
 
           {/* Napit */}
@@ -184,7 +188,7 @@ export default function App() {
               onClick={() => setShowCarModal(true)}
               style={{ padding: '8px 20px', border: '1.5px solid #2a2a2a', background: selectedCar || selectedCategory ? '#1a1a2e' : '#faf9f6', color: selectedCar || selectedCategory ? 'white' : '#1a1a1a', cursor: 'pointer', fontSize: 14, fontWeight: 600, borderRadius: 3 }}
             >
-              {selectedCategory === 'vanteet' ? '🔩 Vanteet' : selectedCategory === 'radiot' ? '📻 Radiot' : selectedCar ? CAR_MODELS.find(c => c.value === selectedCar)?.label : '▾ Valitse automalli'}
+              {selectedCategory === 'vanteet' ? ' Vanteet' : selectedCategory === 'radiot' ? ' Radiot' : selectedCar ? CAR_MODELS.find(c => c.value === selectedCar)?.label : '▾ Valitse automalli'}
             </button>
             {(selectedCar || selectedCategory) && (
               <button
