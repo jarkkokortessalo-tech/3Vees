@@ -2,10 +2,14 @@ import { useState, useEffect } from 'react'
 import { supabase } from './supabaseClient'
 
 const CAR_MODELS: Record<string, string> = {
-  kupla: '🚗 Kupla',
-  transporter: '🚐 Transporter',
-  golf: '🚙 Golf',
-  jetta: '🚘 Jetta',
+  kupla: 'Kupla',
+  transporter: 'Transporter',
+  golf: 'Golf',
+  jetta: 'Jetta',
+  passat: 'Passat',
+  polo: 'Polo',
+  scirocco: 'Scirocco',
+  corrado: 'Corrado',
 }
 
 const CONDITION_LABELS: Record<string, string> = {
