@@ -172,16 +172,40 @@ export default function App() {
                 </div>
                 <button onClick={signOut} style={{ padding: '7px 12px', border: '1px solid #ccc', background: 'transparent', cursor: 'pointer', fontSize: 12, color: '#888', borderRadius: 3 }}>Ulos</button>
               </>
-            ) : (
+           ) : (
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
               <button onClick={() => goTo('#login')} style={{ padding: '7px 16px', border: '1.5px solid #2a2a2a', background: '#faf9f6', cursor: 'pointer', fontSize: 13, fontWeight: 600, borderRadius: 3 }}>Kirjaudu sisään</button>
-            )}
+              <button onClick={() => { window.location.hash = '#login'; window.location.hash = '#login'; goTo('#login') }} style={{ padding: '7px 14px', border: '1.5px solid #c1121f', background: '#c1121f', color: 'white', cursor: 'pointer', fontSize: 13, fontWeight: 600, borderRadius: 3 }}>Luo tili</button>
+            </div>
+          )}
           </div>
 
           {/* Logo */}
           <div style={{ textAlign: 'center', padding: '24px 0 16px' }}>
             <img src={LOGO_URL} alt="3Vs VW Parts" style={{ maxWidth: 300, width: '100%', height: 'auto' }} />
           </div>
-
+{/* Jätä ilmoitus -banneri kirjautumattomille */}
+{!user && (
+  <div style={{ textAlign: 'center', paddingBottom: 12 }}>
+    <button
+      onClick={() => goTo('#login')}
+      style={{
+        padding: '10px 28px',
+        background: '#c1121f',
+        color: 'white',
+        border: 'none',
+        borderRadius: 3,
+        fontSize: 15,
+        fontWeight: 800,
+        cursor: 'pointer',
+        letterSpacing: '0.3px',
+        boxShadow: '3px 3px 0 #8b0000',
+      }}
+    >
+      + Jätä ilmoitus
+    </button>
+  </div>
+)}
           {/* Napit */}
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center', paddingBottom: 16 }}>
             <button
