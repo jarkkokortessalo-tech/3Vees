@@ -4,6 +4,8 @@ import { supabase } from './supabaseClient'
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  // UUSI: Tila koko nimelle
+  const [fullName, setFullName] = useState('') 
   const [isRegister, setIsRegister] = useState(false)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
@@ -13,12 +15,21 @@ export default function Login() {
     setMessage('')
 
     if (isRegister) {
-      const { data, error } = await supabase.auth.signUp({ email, password })
+      // MUUTOS: Lähetetään fullName metadata-kentässä
+      const { data, error } = await supabase.auth.signUp({ 
+        email, 
+        password,
+        options: {
+          data: {
+            full_name: fullName // Tämä menee SQL-triggerille käsiteltäväksi
+          }
+        }
+      })
+
       if (error) {
         setMessage('Virhe: ' + error.message)
       } else if (data.user) {
-        // Luodaan profiili suoraan tässä
-        await supabase.from('profiles').upsert({ id: data.user.id })
+        // HUOM: Poistimme manuaalisen upsert-kutsun, koska SQL-trigger hoitaa sen!
         setMessage('✅ Tili luotu! Voit nyt kirjautua sisään.')
         setIsRegister(false)
       }
@@ -33,6 +44,17 @@ export default function Login() {
   return (
     <div style={{ maxWidth: 400, margin: '60px auto', padding: 32, border: '1px solid #eee', borderRadius: 16, boxShadow: '0 4px 20px rgba(0,0,0,0.08)', fontFamily: 'sans-serif' }}>
       <h2 style={{ marginTop: 0 }}>{isRegister ? 'Luo tili' : 'Kirjaudu sisään'}</h2>
+
+      {/* UUSI: Näytetään nimikenttä vain rekisteröityessä */}
+      {isRegister && (
+        <input
+          type="text"
+          placeholder="Koko nimi (esim. Matti Meikäläinen)"
+          value={fullName}
+          onChange={e => setFullName(e.target.value)}
+          style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '2px solid #ddd', fontSize: 15, marginBottom: 10, boxSizing: 'border-box' }}
+        />
+      )}
 
       <input
         type="email"
